@@ -3,9 +3,16 @@ package com.tianchen.homehub_backend;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+
+import java.util.Arrays;
 
 @Configuration
 public class appConfig {
@@ -15,23 +22,15 @@ public class appConfig {
         http
                 .csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/api/register","/api/login").permitAll() // 允许未认证用户访问 /api/register
+                .requestMatchers("/api/register","/api/login","/api/logout","/api/username").permitAll() // 允许未认证用户访问
                 .anyRequest().authenticated() // 其他请求都需要认证
-                .and()
-                .logout()
-                    .logoutUrl("/api/logout") // 设置登出的URL
-                    .invalidateHttpSession(true)// 使HttpSession失效
-                    .deleteCookies("JSESSIONID") // 删除cookie
-                    .logoutSuccessHandler((request, response, authentication) -> {
-                        response.setContentType("application/json");
-                        response.setCharacterEncoding("UTF-8");
-                        response.getWriter().write("{\"message\": \"Logged out successfully\"}");
-                        response.setStatus(200);
-                }) // 登出成功后返回 JSON 格式的消息
                 .and()
                 .formLogin() // 启用基于表单的登录页面
                 .and()
                 .httpBasic(); // 启用基本身份验证
+                http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
+
+
         return http.build();
     }
 
@@ -49,5 +48,20 @@ public class appConfig {
             }
         };
     }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/api/**", configuration);
+        return source;
+        }
+
 
 }
