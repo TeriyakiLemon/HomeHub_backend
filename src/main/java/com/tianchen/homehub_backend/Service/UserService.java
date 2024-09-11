@@ -56,6 +56,12 @@ public class UserService {
         }
     }
 
+    public User findByUsernameOrEmail(String usernameOrEmail) {
+        Optional<User> userOpt = userRepository.findByUsername(usernameOrEmail);
+        if (userOpt.isEmpty()) {
+            userOpt = userRepository.findByEmail(usernameOrEmail);
+        }
+        return userOpt.orElse(null);
+    }
+
 }
-
-
