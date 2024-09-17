@@ -16,6 +16,7 @@ public class WebSocketHandshakeIntercepter implements HandshakeInterceptor {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated()) {
             attributes.put("username", authentication.getName());  // 将用户名存入属性
+            System.out.println("WebSocket Handshake initiated with username: " + authentication.getName());
         }
         return true;
     }
