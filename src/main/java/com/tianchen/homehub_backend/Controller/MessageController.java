@@ -5,6 +5,7 @@ import com.tianchen.homehub_backend.model.Message;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -25,17 +26,20 @@ public class MessageController {
 
     @PostMapping("/Send")
     public ResponseEntity<Message> sendMessage(@RequestBody Map<String, Object> payload) {
-        Long senderId = Long.valueOf(payload.get("senderId").toString());
-        Long receiverId = Long.valueOf(payload.get("receiverId").toString());
+        String senderUsername = payload.get("senderUsername").toString();
+        String receiverUsername = payload.get("receiverUsername").toString();
         String content = payload.get("content").toString();
 
-        Message message = messageService.sendMessage(senderId, receiverId, content);
+        Message message = messageService.sendMessage(senderUsername, receiverUsername, content);
         return ResponseEntity.ok(message);
     }
 
-    @GetMapping("/{userId1}/{userId2}")
-    public ResponseEntity<List<Message>> getMessages(@PathVariable Long userId1, @PathVariable Long userId2) {
-        List<Message> messages = messageService.getMessages(userId1, userId2);
+    @GetMapping("/{username1}/{username2}")
+    public ResponseEntity<List<Message>> getMessages(@PathVariable String username1, @PathVariable String username2) {
+        List<Message> messages = messageService.getMessages(username1, username2);
+        if (messages.isEmpty()) {
+            return ResponseEntity.ok(Collections.emptyList());
+        }
         return ResponseEntity.ok(messages);
     }
 }

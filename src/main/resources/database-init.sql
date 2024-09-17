@@ -14,12 +14,12 @@ CREATE TABLE users (
 
 CREATE TABLE messages (
                           id BIGINT AUTO_INCREMENT PRIMARY KEY,
-                          sender_id BIGINT NOT NULL,
-                          receiver_id BIGINT NOT NULL,
+                          sender_username VARCHAR(255) NOT NULL,
+                          receiver_username VARCHAR(255) NOT NULL,
                           content TEXT NOT NULL,
                           timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                           is_read BOOLEAN DEFAULT FALSE,
-                          FOREIGN KEY (sender_id) REFERENCES users(id) ON DELETE CASCADE,
-                          FOREIGN KEY (receiver_id) REFERENCES users(id) ON DELETE CASCADE
+                          FOREIGN KEY (sender_username) REFERENCES users(username) ON DELETE CASCADE,
+                          FOREIGN KEY (receiver_username) REFERENCES users(username) ON DELETE CASCADE
 );
 

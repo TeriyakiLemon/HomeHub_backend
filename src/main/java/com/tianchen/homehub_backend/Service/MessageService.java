@@ -19,14 +19,14 @@ public class MessageService {
     @Autowired
     private UserRepository userRepository;
 
-    public Message sendMessage(Long senderId, Long receiverId, String content){
-        Optional<User> sender = userRepository.findById(senderId);
-        Optional<User> receiver = userRepository.findById(receiverId);
+    public Message sendMessage(String senderUsername, String receiverUsername, String content){
+        Optional<User> sender = userRepository.findByUsername(senderUsername);
+        Optional<User> receiver = userRepository.findByUsername(receiverUsername);
 
         if (sender.isPresent() && receiver.isPresent()) {
             Message message = new Message(null,
-                    sender.get(),
-                    receiver.get(),
+                    senderUsername,
+                    receiverUsername,
                     content,
                     LocalDateTime.now(),
                     false);
@@ -37,8 +37,8 @@ public class MessageService {
         }
     }
 
-    public List<Message> getMessages(Long userId1, Long userId2) {
-        return messageRepository.findMessagesBetweenUsers(userId1, userId2);
+    public List<Message> getMessages(String senderUsername, String receiverUsername) {
+        return messageRepository.findMessagesBetweenUsers(senderUsername, receiverUsername);
     }
 
     public void markMessageAsRead(Long messageId) {
