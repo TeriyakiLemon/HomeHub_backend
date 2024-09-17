@@ -18,7 +18,7 @@ public class MessageController {
         this.messageService = messageService;
     }
 
-    @PostMapping("/{messageId}/Read")
+    @PutMapping("/{messageId}/Read")
     public ResponseEntity<Void> markAsRead(@PathVariable Long messageId) {
         messageService.markMessageAsRead(messageId);
         return ResponseEntity.ok().build();
@@ -41,5 +41,10 @@ public class MessageController {
             return ResponseEntity.ok(Collections.emptyList());
         }
         return ResponseEntity.ok(messages);
+    }
+
+    @GetMapping("/UnreadCount/{username}")
+    public ResponseEntity<Integer> countUnreadMessages(@PathVariable String username) {
+        return ResponseEntity.ok(messageService.countUnreadMessages(username));
     }
 }

@@ -45,4 +45,8 @@ public class MessageService {
         messageRepository.markMessageAsRead(messageId);
     }
 
+    public int countUnreadMessages(String username) {
+        return messageRepository.countUnreadMessages(username);
+    }
+
 }

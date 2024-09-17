@@ -39,6 +39,10 @@ public class MessageRepository {
         jdbcTemplate.update(MARK_MESSAGE_AS_READ_SQL, messageId);
     }
 
+    public int countUnreadMessages(String username) {
+        return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM messages WHERE receiver_Username = ? AND is_read = false", Integer.class, username);
+    }
+
     private class MessageRowMapper implements RowMapper<Message> {
         @Override
         public Message mapRow(ResultSet rs, int rowNum) throws SQLException {
