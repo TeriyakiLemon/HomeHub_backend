@@ -6,6 +6,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -92,6 +93,27 @@ public class UserController {
 
         return ResponseEntity.ok(userInfo);
     }
+
+    @GetMapping("/GetUserBycommunityName")
+    public ResponseEntity<List<User>> getUsersByCommunityName() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && authentication.isAuthenticated()) {
+            String username = authentication.getName();
+            User user = userService.findByUsernameOrEmail(username);
+            if (user != null) {
+                List<User> users = userService.getUsersByCommunityName(user.communityName());
+                return ResponseEntity.ok(users);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    }
+
+
+
 
 
 

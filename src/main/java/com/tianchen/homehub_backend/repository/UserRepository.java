@@ -5,6 +5,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -66,5 +67,17 @@ public class UserRepository {
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
+    }
+
+    public List<User> findUserByCommunityName(String communityName) {
+        String sql = "SELECT * FROM users WHERE community_name = ?";
+        return jdbcTemplate.query(sql, new Object[]{communityName}, (rs, rowNum) -> new User(
+                rs.getLong("id"),
+                rs.getString("community_name"),
+                rs.getString("username"),
+                rs.getString("password"),
+                rs.getString("email"),
+                rs.getString("user_type")
+        ));
     }
 }
