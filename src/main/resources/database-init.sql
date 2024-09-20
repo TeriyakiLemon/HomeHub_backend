@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS discussion;
 DROP TABLE IF EXISTS messages;
 DROP TABLE IF EXISTS users;
-
+DROP TABLE IF EXISTS calendar;
 
 
 CREATE TABLE users (
@@ -34,5 +34,12 @@ CREATE TABLE discussion (
                         FOREIGN KEY (author) REFERENCES users(username) ON DELETE CASCADE
 
 
+);
+
+CREATE TABLE calendar (
+                          id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                          date VARCHAR(50) NOT NULL,
+                          time VARCHAR(50) NOT NULL,
+                          title VARCHAR(255) NOT NULL
 );
 
