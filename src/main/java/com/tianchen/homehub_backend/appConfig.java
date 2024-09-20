@@ -29,7 +29,7 @@ public class appConfig {
                 .cors()
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers("/api/register","/api/login","/api/logout","/api/username","/chat/**").permitAll() // 允许未认证用户访问
+                .requestMatchers("/api/register","/api/login","/api/logout","/api/username","/chat/**","/api/calendar/**").permitAll() // 允许未认证用户访问
                 .anyRequest().authenticated() // 其他请求都需要认证
                 .and()
                 .formLogin() // 启用基于表单的登录页面
