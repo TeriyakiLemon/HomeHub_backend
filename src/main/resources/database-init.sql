@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS discussion;
 DROP TABLE IF EXISTS messages;
 DROP TABLE IF EXISTS users;
 
@@ -21,5 +22,17 @@ CREATE TABLE messages (
                           is_read BOOLEAN DEFAULT FALSE,
                           FOREIGN KEY (sender_username) REFERENCES users(username) ON DELETE CASCADE,
                           FOREIGN KEY (receiver_username) REFERENCES users(username) ON DELETE CASCADE
+);
+
+CREATE TABLE discussion (
+                        id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                        title VARCHAR(255) NOT NULL,
+                        content TEXT NOT NULL,
+                        author VARCHAR(255) NOT NULL,
+                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                        FOREIGN KEY (author) REFERENCES users(username) ON DELETE CASCADE
+
+
 );
 
