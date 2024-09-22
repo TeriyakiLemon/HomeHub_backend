@@ -30,7 +30,7 @@ public class ReplyController {
     }
 
     //根据讨论id 查询所有回复
-    @PostMapping("/getRepliesByDiscussionId/{discussionId}")
+    @GetMapping ("/getRepliesByDiscussionId/{discussionId}")
     public ResponseEntity<List<Reply>> getReplies(@PathVariable Long discussionId) {
         return ResponseEntity.ok(replyService.getRepliesByDiscussionId(discussionId));
     }
