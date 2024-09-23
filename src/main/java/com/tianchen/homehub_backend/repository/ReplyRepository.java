@@ -48,5 +48,22 @@ public class ReplyRepository {
         return jdbcTemplate.update(sql, id);
     }
 
+    public int countUnreadReplies(String username) {
+        String sql = "SELECT COUNT(*) FROM replies r " +
+                "JOIN discussion d ON r.discussion_id = d.id " +
+                "WHERE d.author = ? AND r.author != ? AND r.is_read = FALSE";
+        return jdbcTemplate.queryForObject(sql, Integer.class, username, username);
+    }
+
+    public void markAsRead(String username) {
+           String sql = "UPDATE replies r " +
+                    "JOIN discussion d ON r.discussion_id = d.id " +
+                    "SET r.is_read = TRUE " +
+                    "WHERE d.author = ? AND r.author != ? AND r.is_read = FALSE";
+            jdbcTemplate.update(sql, username, username);
+    }
+
+
+
 
 }

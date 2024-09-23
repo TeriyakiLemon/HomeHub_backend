@@ -44,8 +44,11 @@ CREATE TABLE replies (
                          author VARCHAR(255) NOT NULL,
                          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                          updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                         is_read BOOLEAN DEFAULT FALSE,
                          FOREIGN KEY (discussion_id) REFERENCES discussion(id) ON DELETE CASCADE,
                          FOREIGN KEY (author) REFERENCES users(username) ON DELETE CASCADE
+
+
 );
 
 

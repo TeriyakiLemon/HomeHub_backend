@@ -42,6 +42,19 @@ public class ReplyController {
         return ResponseEntity.ok().build();
     }
 
+    //统计未读回复
+    @GetMapping("/countUnreadReplies/{username}")
+    public ResponseEntity<Integer> countUnreadReplies(@PathVariable String username) {
+        return ResponseEntity.ok(replyService.countUnreadReplies(username));
+    }
+
+    //标记为已读
+    @PutMapping("/markAsRead/{username}")
+    public ResponseEntity<Void> markAsRead( @PathVariable String username) {
+        replyService.markAsRead(username);
+        return ResponseEntity.ok().build();
+    }
+
 
 
 

@@ -26,4 +26,13 @@ public class ReplyService {
     public void deleteReply(Long id) {
         replyRepository.deleteById(id);
     }
+
+    public int countUnreadReplies(String username) {
+        return replyRepository.countUnreadReplies(username);
+    }
+
+    public void markAsRead(String username) {
+        replyRepository.markAsRead(username);
+    }
+
 }
